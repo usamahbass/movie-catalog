@@ -1,5 +1,7 @@
+import Routes from "./routes";
+
 const App = () => {
-  return <div>halo app</div>;
+  return <Routes />;
 };
 
 export default App;

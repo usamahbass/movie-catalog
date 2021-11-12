@@ -1,15 +1,21 @@
 import { StrictMode } from "react";
 import { render } from "react-dom";
+import { Provider } from "react-redux";
 import { ThemeApp } from "./theme";
+import { storeConfiguration } from "./redux";
 import App from "./App";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
 
+const store = storeConfiguration();
+
 render(
   <StrictMode>
-    <ThemeApp>
-      <App />
-    </ThemeApp>
+    <Provider store={store}>
+      <ThemeApp>
+        <App />
+      </ThemeApp>
+    </Provider>
   </StrictMode>,
   document.getElementById("root")
 );

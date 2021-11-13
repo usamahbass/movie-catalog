@@ -83,6 +83,7 @@ const FavoritePages = () => {
         </Heading>
 
         <Row>
+          {/* FAV LIST LEFT */}
           <Col sm={12} md={4}>
             <Button
               mb="10"
@@ -90,40 +91,49 @@ const FavoritePages = () => {
               colorScheme="primary"
               onClick={onOpenAdd}
             >
-              Add Favorite List
+              Add Favorite Category
             </Button>
-            {favorite?.map((fav) => (
-              <Flex
-                mb="3"
-                key={fav.name}
-                alignItems="center"
-                justifyContent="space-between"
-              >
-                <NavItem
-                  count={fav?.movies?.length}
-                  onClick={() => dispatch(setIsFavorite(fav))}
-                  active={JSON.stringify(fav) === JSON.stringify(isFavorite)}
+            {favorite?.length > 0 ? (
+              favorite?.map((fav) => (
+                <Flex
+                  mb="3"
+                  key={fav.name}
+                  alignItems="center"
+                  justifyContent="space-between"
                 >
-                  {fav.name}
-                </NavItem>
-                <IconButton
-                  size="sm"
-                  variant="ghost"
-                  colorScheme="danger"
-                  icon={<Trash />}
-                  onClick={() => {
-                    onOpenDelete();
-                    setDataPick(fav);
-                  }}
-                />
-              </Flex>
-            ))}
+                  <NavItem
+                    count={fav?.movies?.length}
+                    onClick={() => dispatch(setIsFavorite(fav))}
+                    active={JSON.stringify(fav) === JSON.stringify(isFavorite)}
+                  >
+                    {fav.name}
+                  </NavItem>
+                  <IconButton
+                    size="sm"
+                    variant="ghost"
+                    colorScheme="danger"
+                    icon={<Trash />}
+                    onClick={() => {
+                      onOpenDelete();
+                      setDataPick(fav);
+                    }}
+                  />
+                </Flex>
+              ))
+            ) : (
+              <Box w="70%">
+                nothing favorite category list here, please add favorite
+                category...
+              </Box>
+            )}
           </Col>
+
+          {/* FAVORITE CLICK LIST */}
 
           <Col sm={12} md={8}>
             {isFavorite ? (
               isFavorite?.movies?.length > 0 ? (
-                <Row>
+                <Box mt="5" as={Row}>
                   {isFavorite?.movies?.map((isFav) => (
                     <Box mb="5" sm={12} md={4} as={Col}>
                       <MovieCard
@@ -136,16 +146,18 @@ const FavoritePages = () => {
                       />
                     </Box>
                   ))}
-                </Row>
+                </Box>
               ) : (
                 <Box
+                  w="full"
+                  mt="20"
                   display="flex"
                   alignItems="center"
                   justifyContent="center"
-                  w="full"
                   letterSpacing=".5px"
                 >
-                  Tidak ada data disini !
+                  there is no movie here, please add movie to favorite category{" "}
+                  {isFavorite?.name}...
                 </Box>
               )
             ) : null}
@@ -161,10 +173,11 @@ const FavoritePages = () => {
           rightButton="Delete"
           colorSchemeRightButton="danger"
           handleAction={() => {
-            dispatch(removeMoviesFromFavorite(isFavorite, dataPick));
+            dispatch(removeMoviesFromFavorite(dataPick));
             toast({
-              title: "Movie has been removed from favorite list !",
+              title: "Movie has been removed from category !",
               status: "success",
+              position: "top",
               isClosable: true,
             });
             onCloseDeleteMoviesFromFav();
@@ -178,7 +191,7 @@ const FavoritePages = () => {
         <CustomAlertDialog
           isOpen={isOpenDelete}
           onClose={onCloseDelete}
-          title="Delete Movie List ?"
+          title="Delete Favorite Category ?"
           leftButton="Cancel"
           colorSchemeLeftButton="info"
           rightButton="Delete"
@@ -186,8 +199,9 @@ const FavoritePages = () => {
           handleAction={() => {
             dispatch(removeFavorite(dataPick));
             toast({
-              title: "Movie List has been removed !",
+              title: "Favorite Category has been removed !",
               status: "success",
+              position: "top",
               isClosable: true,
             });
             onCloseDelete();
@@ -213,8 +227,9 @@ const FavoritePages = () => {
             const datas = { ...values, movies: [] };
             dispatch(addFavorite(datas));
             toast({
-              title: "Movie List has been added !",
+              title: "Favorite category has been added !",
               status: "success",
+              position: "top",
               isClosable: true,
             });
             resetForm();
@@ -224,7 +239,8 @@ const FavoritePages = () => {
           <FormControl isInvalid={errors?.name}>
             <InputGroup>
               <Input
-                placeholder="Movie List Name"
+                autoComplete="off"
+                placeholder="Favorite Category List Name"
                 {...register("name", { required: true })}
               />
               <InputRightElement>
@@ -234,7 +250,7 @@ const FavoritePages = () => {
 
             {errors?.name && (
               <FormErrorMessage fontSize="sm">
-                Enter movie list name
+                Enter favorite category name
               </FormErrorMessage>
             )}
           </FormControl>

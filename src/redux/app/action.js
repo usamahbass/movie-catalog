@@ -60,7 +60,7 @@ export const addMoviesToFavorite = (favList, movies) => ({
   payload: { favList, movies },
 });
 
-export const removeMoviesFromFavorite = (favList, movies) => ({
+export const removeMoviesFromFavorite = (movies) => ({
   type: REMOVE_MOVIES_FROM_FAVORITE,
-  payload: { favList, movies },
+  payload: movies,
 });

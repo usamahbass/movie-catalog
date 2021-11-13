@@ -1,20 +1,23 @@
 import { StrictMode } from "react";
 import { render } from "react-dom";
 import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 import { ThemeApp } from "./theme";
 import { storeConfiguration } from "./redux";
 import App from "./App";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
 
-const store = storeConfiguration();
+const { store, persistor } = storeConfiguration();
 
 render(
   <StrictMode>
     <Provider store={store}>
-      <ThemeApp>
-        <App />
-      </ThemeApp>
+      <PersistGate loading={null} persistor={persistor}>
+        <ThemeApp>
+          <App />
+        </ThemeApp>
+      </PersistGate>
     </Provider>
   </StrictMode>,
   document.getElementById("root")

@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { Check as CheckIcon } from "react-feather";
+import { useLocation } from "react-router-dom";
 import {
   addMoviesToFavorite,
   getMoreMovies,
@@ -23,6 +24,7 @@ import Layout from "~/layouts/layout";
 import InfiniteScroll from "react-infinite-scroll-component";
 import FallbackCard from "~/components/fallback/_card";
 import Head from "~/components/head";
+import MovieSlug from "~/views/movie-slug";
 
 const LoaderMovies = () => {
   return (
@@ -42,10 +44,13 @@ const LoaderMovies = () => {
 };
 
 const HomePages = () => {
+  const { search } = useLocation();
   const { loading, movies, favorite } = useSelector((state) => state.app);
 
   const toast = useToast();
   const [hasMore, setHasMore] = useState(false);
+
+  const movieQueryParam = new URLSearchParams(search).get("movie");
 
   const fetchMoreArticle = async () => {
     if (movies?.results?.length === movies?.total_results) {
@@ -72,6 +77,10 @@ const HomePages = () => {
       }
     }
   }, [movies]);
+
+  if (movieQueryParam) {
+    return <MovieSlug />;
+  }
 
   return (
     <Layout>
@@ -106,37 +115,50 @@ const HomePages = () => {
                     <MenuList>
                       <MenuGroup
                         letterSpacing=".5px"
-                        title="Favorite Movie Lists"
+                        title="Add to favorite category"
                       >
-                        {favorite?.map((fav) => {
-                          const disabledIsClick = favorite
-                            .find((isFav) => isFav.id === fav.id)
-                            .movies.some((elem) => elem.id === movie.id);
+                        {favorite?.length > 0 ? (
+                          favorite?.map((fav) => {
+                            const disabledIsClick = favorite
+                              .find((isFav) => isFav.id === fav.id)
+                              .movies.some((elem) => elem.id === movie.id);
 
-                          return (
-                            <MenuItem
-                              display="flex"
-                              key={fav.name}
-                              justifyContent="space-between"
-                              isDisabled={disabledIsClick}
-                              onClick={() => {
-                                dispatch(addMoviesToFavorite(fav, movie));
-                                toast({
-                                  title:
-                                    "Movie has been stored to favorite list !",
-                                  status: "success",
-                                  isClosable: true,
-                                });
-                              }}
-                            >
-                              <Text>{fav.name}</Text>
+                            return (
+                              <MenuItem
+                                display="flex"
+                                key={fav.name}
+                                isDisabled={disabledIsClick}
+                                justifyContent="space-between"
+                                onClick={() => {
+                                  dispatch(addMoviesToFavorite(fav, movie));
+                                  toast({
+                                    title:
+                                      "Movie has been stored to favorite list !",
+                                    status: "success",
+                                    isClosable: true,
+                                    position: "top",
+                                  });
+                                }}
+                              >
+                                <Text>{fav.name}</Text>
 
-                              {disabledIsClick && (
-                                <Icon color="success.700" as={CheckIcon} />
-                              )}
-                            </MenuItem>
-                          );
-                        })}
+                                {disabledIsClick && (
+                                  <Icon
+                                    w={5}
+                                    h={5}
+                                    strokeWidth={3}
+                                    color="success.700"
+                                    as={CheckIcon}
+                                  />
+                                )}
+                              </MenuItem>
+                            );
+                          })
+                        ) : (
+                          <Box p="5" textAlign="center">
+                            nothing list, please create favorite category list.
+                          </Box>
+                        )}
                       </MenuGroup>
                     </MenuList>
                   </MovieCard>

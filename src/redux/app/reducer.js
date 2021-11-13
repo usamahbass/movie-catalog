@@ -45,7 +45,14 @@ const appReducers = (state = initialApp, action) => {
       const filterFavoriteByID = state.favorite.filter(
         (fav) => fav.id !== action.payload.id
       );
-      return { ...state, favorite: filterFavoriteByID };
+
+      const findIsFavoriteSameWithFavoriteRemoved =
+        state.isFavorite.id === action.payload.id;
+
+      if (findIsFavoriteSameWithFavoriteRemoved)
+        return { ...state, favorite: filterFavoriteByID, isFavorite: null };
+      else return { ...state, favorite: filterFavoriteByID };
+
     case SET_IS_FAVORITE:
       return { ...state, isFavorite: action.payload };
     case ADD_MOVIES_TO_FAVORITE:
@@ -58,19 +65,17 @@ const appReducers = (state = initialApp, action) => {
       return state;
     case REMOVE_MOVIES_FROM_FAVORITE:
       const findFavoriteFromRemove = state.favorite.find(
-        (fav) => fav.id === action.payload.favList.id
+        (fav) => fav.id === state.isFavorite.id
       );
 
-      findFavoriteFromRemove.movies.filter(
-        (fav) => fav.id !== action.payload.movies.id
+      state.favorite.filter(
+        () =>
+          (findFavoriteFromRemove.movies = findFavoriteFromRemove.movies.filter(
+            (movie) => movie.id !== action.payload.id
+          ))
       );
 
-      console.log(findFavoriteFromRemove, "HERE");
-
-      return {
-        ...state,
-        favorite: [...state.favorite, findFavoriteFromRemove],
-      };
+      return state;
     default:
       return state;
   }

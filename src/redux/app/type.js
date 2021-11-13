@@ -1,0 +1,20 @@
+/**
+ * MOVIES
+ *
+ */
+export const GET_MOVIES = "GET_MOVIES";
+export const SET_MOVIES = "SET_MOVIES";
+export const GET_MORE_MOVIES = "GET_MORE_MOVIES";
+export const SET_MORE_MOVIES = "SET_MORE_MOVIES";
+
+/**
+ * FAVORITE
+ *
+ */
+
+export const ADD_FAVORITE = "ADD_FAVORITE";
+export const EDIT_FAVORITE = "EDIT_FAVORITE";
+export const REMOVE_FAVORITE = "REMOVE_FAVORITE";
+export const SET_IS_FAVORITE = "SET_IS_FAVORITE";
+export const ADD_MOVIES_TO_FAVORITE = "ADD_MOVIES_TO_FAVORITE";
+export const REMOVE_MOVIES_FROM_FAVORITE = "REMOVE_MOVIES_FROM_FAVORITE";

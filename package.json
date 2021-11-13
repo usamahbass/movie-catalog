@@ -3,12 +3,28 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@chakra-ui/react": "^1.6.12",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "axios": "^0.24.0",
+    "framer-motion": "^4",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-feather": "^2.0.9",
+    "react-grid-system": "^7.3.1",
+    "react-helmet": "^6.1.0",
+    "react-hook-form": "^7.19.5",
+    "react-icons": "^4.3.1",
+    "react-infinite-scroll-component": "^6.1.0",
+    "react-redux": "^7.2.6",
+    "react-router-dom": "^6.0.2",
     "react-scripts": "4.0.3",
+    "redux": "^4.1.2",
+    "redux-persist": "^6.0.0",
+    "redux-saga": "^1.1.3",
     "web-vitals": "^0.2.4",
     "workbox-background-sync": "^5.1.3",
     "workbox-broadcast-update": "^5.1.3",
@@ -24,10 +40,10 @@
     "workbox-streams": "^5.1.3"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-app-rewired eject"
   },
   "eslintConfig": {
     "extends": [
@@ -46,5 +62,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "babel-plugin-root-import": "^6.6.0",
+    "customize-cra": "^1.0.0",
+    "eslint-import-resolver-babel-plugin-root-import": "^1.1.1",
+    "http-proxy-middleware": "^2.0.1",
+    "react-app-rewired": "^2.1.8"
   }
 }

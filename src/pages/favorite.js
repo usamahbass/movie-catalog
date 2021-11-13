@@ -12,13 +12,14 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { PlusCircle, Trash } from "react-feather";
+import { Edit, PlusCircle, Trash } from "react-feather";
 import { Row, Col } from "react-grid-system";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { useDisclosure } from "@chakra-ui/hooks";
 import {
   addFavorite,
+  editFavorite,
   removeFavorite,
   removeMoviesFromFavorite,
   setIsFavorite,
@@ -29,16 +30,19 @@ import Layout from "~/layouts/layout";
 import CustomAlertDialog from "~/components/custom-alert-dialog";
 import WarningIcon from "~/icons/warning";
 import MovieCard from "~/components/card";
+import { METHOD_TYPE } from "~/utils/constants";
 
 const FavoritePages = () => {
   const toast = useToast();
   const dispatch = useDispatch();
   const { favorite, isFavorite } = useSelector((state) => state.app);
 
+  const [methodType, setMethodType] = useState("create");
+
   const {
     register,
     handleSubmit,
-    reset: resetForm,
+    setValue,
     formState: { errors },
   } = useForm();
 
@@ -89,7 +93,10 @@ const FavoritePages = () => {
               mb="10"
               leftIcon={<PlusCircle size="1.2rem" />}
               colorScheme="primary"
-              onClick={onOpenAdd}
+              onClick={() => {
+                onOpenAdd();
+                setMethodType("create");
+              }}
             >
               Add Favorite Category
             </Button>
@@ -108,6 +115,21 @@ const FavoritePages = () => {
                   >
                     {fav.name}
                   </NavItem>
+
+                  <IconButton
+                    mr="2"
+                    size="sm"
+                    variant="ghost"
+                    colorScheme="warning"
+                    icon={<Edit />}
+                    onClick={() => {
+                      onOpenAdd();
+                      setDataPick(fav);
+                      setValue("name", fav.name);
+                      setMethodType(METHOD_TYPE.EDIT);
+                    }}
+                  />
+
                   <IconButton
                     size="sm"
                     variant="ghost"
@@ -167,7 +189,7 @@ const FavoritePages = () => {
         <CustomAlertDialog
           isOpen={isOpenDeleteMoviesFromFav}
           onClose={onCloseDeleteMoviesFromFav}
-          title="Delete Movie from Favorite ?"
+          title={`Delete Movie from Category ${isFavorite?.name} ?`}
           leftButton="Cancel"
           colorSchemeLeftButton="info"
           rightButton="Delete"
@@ -214,32 +236,54 @@ const FavoritePages = () => {
 
         <CustomAlertDialog
           isOpen={isOpenAdd}
-          title="Add Movie List"
           leftButton="Cancel"
           colorSchemeLeftButton="danger"
-          rightButton="Add"
+          rightButton={methodType === METHOD_TYPE.CREATE ? "Add" : "Edit"}
           colorSchemeRightButton="primary"
+          title={
+            methodType === METHOD_TYPE.CREATE
+              ? "Add Favorite Category"
+              : "Edit Favorite Category"
+          }
           onClose={() => {
+            setValue("name", "");
             onCloseAdd();
-            resetForm();
           }}
           handleAction={handleSubmit((values) => {
-            const datas = { ...values, movies: [] };
-            dispatch(addFavorite(datas));
-            toast({
-              title: "Favorite category has been added !",
-              status: "success",
-              position: "top",
-              isClosable: true,
-            });
-            resetForm();
-            onCloseAdd();
+            if (methodType === METHOD_TYPE.CREATE) {
+              const datas = { ...values, movies: [] };
+              dispatch(addFavorite(datas));
+              toast({
+                title: "Favorite category has been added !",
+                status: "success",
+                position: "top",
+                isClosable: true,
+              });
+              setValue("name", "");
+              onCloseAdd();
+            } else {
+              dispatch(
+                editFavorite({
+                  ...dataPick,
+                  name: values.name,
+                })
+              );
+              toast({
+                title: "Favorite category has been edited !",
+                status: "success",
+                position: "top",
+                isClosable: true,
+              });
+              setValue("name", "");
+              onCloseAdd();
+            }
           })}
         >
           <FormControl isInvalid={errors?.name}>
             <InputGroup>
               <Input
                 autoComplete="off"
+                defaultValue={dataPick?.name}
                 placeholder="Favorite Category List Name"
                 {...register("name", { required: true })}
               />

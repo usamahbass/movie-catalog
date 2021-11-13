@@ -1,6 +1,7 @@
 import {
   ADD_FAVORITE,
   ADD_MOVIES_TO_FAVORITE,
+  EDIT_FAVORITE,
   GET_MORE_MOVIES,
   GET_MOVIES,
   REMOVE_FAVORITE,
@@ -41,6 +42,15 @@ const appReducers = (state = initialApp, action) => {
         ...state,
         favorite: [...state.favorite, { ...action.payload, id: id++ }],
       };
+    case EDIT_FAVORITE:
+      const newFavorite = state.favorite.map((fav) => {
+        if (fav.id === action.payload.id) {
+          return { ...fav, name: action.payload.name };
+        }
+
+        return fav;
+      });
+      return { ...state, favorite: newFavorite };
     case REMOVE_FAVORITE:
       const filterFavoriteByID = state.favorite.filter(
         (fav) => fav.id !== action.payload.id

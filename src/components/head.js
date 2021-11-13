@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 const Head = ({ title }) => {
   return (
     <Helmet>
-      <title>{title ?? ""} - Movie App</title>
+      <title>{title ?? ""} - Movie Catalog</title>
     </Helmet>
   );
 };

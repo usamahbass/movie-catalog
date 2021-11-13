@@ -6,6 +6,7 @@
 import {
   ADD_FAVORITE,
   ADD_MOVIES_TO_FAVORITE,
+  EDIT_FAVORITE,
   GET_MORE_MOVIES,
   GET_MOVIES,
   REMOVE_FAVORITE,
@@ -43,6 +44,11 @@ export const setMoreMovies = (moreMoviesData) => ({
 export const addFavorite = (favorite) => ({
   type: ADD_FAVORITE,
   payload: favorite,
+});
+
+export const editFavorite = (newFavorite) => ({
+  type: EDIT_FAVORITE,
+  payload: newFavorite,
 });
 
 export const removeFavorite = (favorite) => ({

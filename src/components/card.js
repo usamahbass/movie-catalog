@@ -8,7 +8,6 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 import { Heart as HeartIcon, X as CloseIcon } from "react-feather";
-import { Link } from "react-router-dom";
 import { createImageURL } from "~/utils/helper";
 import PropTypes from "prop-types";
 import Rating from "./rating";
@@ -78,15 +77,10 @@ const MovieCard = ({
             <Box
               fontSize="md"
               as="h4"
-              to={`/?movie=${id}`}
               lineHeight="tight"
               textAlign="center"
               isTruncated
               w="230px"
-              _hover={{
-                color: "primary.500",
-              }}
-              as={Link}
             >
               {title}
             </Box>

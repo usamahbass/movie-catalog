@@ -66,7 +66,7 @@ const HomePages = () => {
 
   useEffect(() => {
     dispatch(getMovies(1));
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (movies) {

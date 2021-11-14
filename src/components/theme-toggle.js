@@ -1,4 +1,4 @@
-cimport {
+import {
   IconButton,
   Tooltip,
   useColorMode,

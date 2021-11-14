@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import {
   IconButton,
   Tooltip,
@@ -7,22 +6,10 @@ import {
 } from "@chakra-ui/react";
 import { Sun as SunIcon, Moon as MoonIcon } from "react-feather";
 
-const ThemeToggle = ({ notRootPage }) => {
+const ThemeToggle = () => {
   const SwitchIcon = useColorModeValue(MoonIcon, SunIcon);
   const text = useColorModeValue("dark", "light");
   const { toggleColorMode: toggleMode } = useColorMode();
-
-  const [isScroll, setIsScroll] = useState(false);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      document.addEventListener("scroll", () => {
-        const status = window.scrollY > 100 ? true : false;
-
-        setIsScroll(status);
-      });
-    }
-  }, []);
 
   return (
     <Tooltip hasArrow label="Ganti tema" placement="bottom">

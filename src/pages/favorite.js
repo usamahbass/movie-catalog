@@ -70,7 +70,7 @@ const FavoritePages = () => {
     if (favorite?.length) {
       dispatch(setIsFavorite(favorite[0]));
     }
-  }, []);
+  }, [dispatch]);
 
   return (
     <Layout>
